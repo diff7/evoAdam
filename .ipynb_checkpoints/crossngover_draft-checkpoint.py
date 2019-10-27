@@ -35,7 +35,7 @@ class CrossN:
                        if keyword in layer_name]
         
     
-    def swich_weights(parentA, parentB, layers):
+    def swich_weights(self, parentA, parentB, layers):
         
         # abundant copying may lead to unnessary memmory usage - need to optimize
         parentA_state_dict = parentA.state_dict()
@@ -55,6 +55,6 @@ class CrossN:
             child = parentA
             child.ancestry = ancestry 
             child.loaload_state_dict(child)
-            return model
+            return child
             
         
