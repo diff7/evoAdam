@@ -5,8 +5,9 @@ import numpy as np
 
 
 class CrossN:
-    def __init__(self, params, n_combinations = 2, pmix = 0.5):
+    def __init__(self, params, n_combinations = 2, pmix = 0.5, debug = True):
         self.p = pmix
+        self.debug = dbug
         self.params = params
         self.n_combinations = n_combinations
         self.layers = []
@@ -44,25 +45,28 @@ class CrossN:
         parentB_state_dict = parentB.state_dict()
         
         if parentA.ancestry != parentB.ancestry:
-            # p is responsible for number or False values to be replaced
+            # p is responsible for percantage or False / Zero values, values not to be replaced
             p = self.p
             child_params = copy(parentA_state_dict)
             for layer in self.layers:
                 w = parentB_state_dict[layer]
                 shape = w.shape
+                
+                # creating the mask with tensor does not cause shape mismatch problem 
                 #mask =  np.random.choice([False, True], size=(shape), p=[1-p, p])
                 mask = torch.cuda.FloatTensor(shape).uniform_() > p
-                #switching weights
-                print(layer, w[mask].shape)
-                print(layer, child_params[layer][mask].shape)
+                # switching weights
                 try:
                     child_params[layer][mask]=w[mask]
+                    if self.debug:
+                        print(layer, w.size()) 
+                        print(layer, child_params[layer].size() )
                 except Exception as e:
-                    print('ERR:', e,layer)
+                    print('skipping layer: ',layer)
             ancestry = '({}{}+{}{})'.format(str(p), parentA.ancestry ,str(1-p), parentB.ancestry)
             #HOWTO initiate a new model in any other way?
             child = PConvUNet()
-            child.load_state_dict(child)
+            child.load_state_dict(child_params)
             child.ancestry = ancestry 
         else:
             child = parentA
@@ -75,5 +79,3 @@ class CrossN:
         
         
 #     def sparta(self, ):
-            
-        
