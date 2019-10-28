@@ -1,14 +1,14 @@
 import itertools 
-from copy import copy
+from copy import deepcopy, copy
 import numpy as np
+from tqdm import tqdm
+import torch
 
 
 
 class CrossN:
-    def __init__(self, params, n_combinations = 2, pmix = 0.5, debug = True):
+    def __init__(self, n_combinations = 2, pmix = 0.5):
         self.p = pmix
-        self.debug = dbug
-        self.params = params
         self.n_combinations = n_combinations
         self.layers = []
         
@@ -18,7 +18,7 @@ class CrossN:
         for counter, net in enumerate(nets):
             if not 'ancestry' in net.__dir__():
                 if len(abc) > counter:
-                    net.ancestry = abc[counter]
+                    net.ancestry = '[{}]'.format(abc[counter])
                 else: 
                     net.ancestry = str(counter)
             n.append(net)
@@ -27,10 +27,11 @@ class CrossN:
     def make_combinations(self, nets):
         nets = self.make_ancestry(nets)
         parents = [n.ancestry for n in nets]
-        families = itertools.product(parents,repeat = 
+        pairs = itertools.product(parents,repeat = 
                                            min(len(parents), 
                                               self.n_combinations))
-        return families
+
+        return pairs
     
     def find_layers(self, model, keyword = 'weight'):
         model_state_dict = model.state_dict()
@@ -38,15 +39,16 @@ class CrossN:
                        if keyword in layer_name]
         
     
-    def switch_weights(self, parentA, parentB, layers):
+    def switch_weights(self, parentA, parentB):
         
         # abundant copying may lead to unnessary memmory usage - need to optimize
         parentA_state_dict = parentA.state_dict()
         parentB_state_dict = parentB.state_dict()
-        
+        # p is responsible for percantage or False / Zero values, values not to be replaced
+        p = self.p
+        child = deepcopy(parentA)
         if parentA.ancestry != parentB.ancestry:
-            # p is responsible for percantage or False / Zero values, values not to be replaced
-            p = self.p
+            
             child_params = copy(parentA_state_dict)
             for layer in self.layers:
                 w = parentB_state_dict[layer]
@@ -58,24 +60,30 @@ class CrossN:
                 # switching weights
                 try:
                     child_params[layer][mask]=w[mask]
-                    if self.debug:
-                        print(layer, w.size()) 
-                        print(layer, child_params[layer].size() )
+                    #child_params[layer][mask]=child_params[layer][mask]=w[mask].view(shape)
                 except Exception as e:
                     print('skipping layer: ',layer)
-            ancestry = '({}{}+{}{})'.format(str(p), parentA.ancestry ,str(1-p), parentB.ancestry)
             #HOWTO initiate a new model in any other way?
-            child = PConvUNet()
-            child.load_state_dict(child_params)
-            child.ancestry = ancestry 
-        else:
-            child = parentA
-            ancestry = '({}+{})'.format(parentA.ancestry, parentB.ancestry)
-            child.ancestry = ancestry 
             
+            child.load_state_dict(child_params)
+            
+        child.ancestry +=',{}.{}'.format(str(1-p), parentB.ancestry)
         return child
     
-#     def mutate(self, ):
-        
-        
-#     def sparta(self, ):
+    
+    def breed(self, nets: list()):
+        nets = deepcopy(nets)
+        self.find_layers(nets[0])
+        families = self.make_combinations(nets)
+        children = []
+        nets_named = {n.ancestry:n for n in nets}
+        for family in tqdm(families):
+            parents = [nets_named[f] for f in family]
+            child = self.switch_weights(*parents)
+            children.append(child)
+        del nets
+        return children
+    
+    def history(self, net):
+        for i, p in enumerate(net.ancestry.split(',')):
+            print('{}+{}'.format('  '*i,p))
