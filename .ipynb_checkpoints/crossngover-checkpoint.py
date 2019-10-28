@@ -67,7 +67,7 @@ class CrossN:
             
             child.load_state_dict(child_params)
             
-        child.ancestry +=',{}.{}'.format(str(1-p), parentB.ancestry)
+        child.ancestry +=',{}.{}'.format(str(1-p), parentB.ancestry.replace(',',' '))
         return child
     
     
