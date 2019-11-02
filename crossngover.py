@@ -5,6 +5,7 @@ from tqdm import tqdm
 import torch
 
 
+
 class CrossN:
     def __init__(self, n_combinations = 2, pmix = 0.5):
         self.p = pmix
@@ -79,9 +80,7 @@ class CrossN:
         for family in tqdm(families):
             parents = [nets_named[f] for f in family]
             child = self.switch_weights(*parents)
-            children.append(child)
-        del nets
-        return children
+            yield сhild
     
     def history(self, net):
         for i, p in enumerate(net.ancestry.split(',')):
