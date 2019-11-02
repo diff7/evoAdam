@@ -16,14 +16,17 @@ class Solver:
 
   def start(self):
     print("Start training")
-    for epoch in tqdm(range(self.epochs)):
+    for epoch in range(self.epochs):
       if (epoch % self.evo_step == 0):
+        self.model.eval()
         best_child_score = self.batch("evolve")
         print(f"best child - {best_child_score}%")
       else:
+        self.model.train()
         loss, val_score = self.batch("train")
         print('[%d] loss: %.3f validation score: %.2f %%' %
           (epoch + 1, loss, val_score))
+    self.model.eval()
     final_score = self.batch("test")
     print('Training is finished\nvalidation score: %.2f %%' %
           (final_score))
@@ -48,25 +51,30 @@ class Solver:
       return loss.item(), val_score
     elif mode == "evolve":
       best_kids = MaxSizeList(self.best_child_count)
-      best_child = copy.deepcopy(self.model)
+      best_child = deepcopy(self.model)
       best_child.apply(mutate_weights)
       best_child_score = self.val_fn(best_child, self.val)
       best_kids.push(best_child)
       for _ in range(self.child_count-1):
-        child = copy.deepcopy(self.model)
+        child = deepcopy(self.model)
         child.apply(mutate_weights)
         child_score = self.val_fn(child, self.val)
         if child_score > best_child_score:
-          best_child_score = copy.deepcopy(child_score)
-          best_child = copy.deepcopy(child)
+          best_child_score = child_score
+          best_child = deepcopy(child)
           best_kids.push(best_child)
-      for child in self.evo_optim(best_kids.get_list()):
+      for child in self.evo_optim.breed(best_kids.get_list()):
         child_score = self.val_fn(child, self.val)
         if child_score > best_child_score:
-          best_child_score = copy.deepcopy(child_score)
-          best_child = copy.deepcopy(child)
-      self.model = copy.deepcopy(best_child)
-      self.optim.load_state_dict(self.model.state_dict())
+          best_child_score = child_score
+          best_child = deepcopy(child)
+      self.model = deepcopy(best_child)
+      self.optim.param_groups = []
+      param_groups = list(self.model.parameters())
+      if not isinstance(param_groups[0], dict):
+            param_groups = [{'params': param_groups}]
+      for param_group in param_groups:
+          self.optim.add_param_group(param_group)
       del child
       del best_child
       return best_child_score
