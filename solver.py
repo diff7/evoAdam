@@ -1,4 +1,28 @@
+import torch
 from tqdm import tqdm
+import random
+class MaxSizeList(object):
+
+    def __init__(self, max_length):
+        self.max_length = max_length
+        self.ls = []
+
+    def push(self, st):
+        if len(self.ls) == self.max_length:
+            self.ls.pop(0)
+        self.ls.append(st)
+
+    def get_list(self):
+        return self.ls
+      
+
+loc = 0
+scale=0.001
+normal = torch.distributions.Normal(loc, scale) # create a normal distribution object
+def mutate_weights(m):
+    if type(m) == nn.Linear or type(m) == nn.Conv2d:
+        m.weight.data = m.weight.data + normal.rsample(m.weight.size()).cuda()
+      
 class Solver:
   def __init__(self, model, optim, loss_fn, val_fn, evo_optim, train, val, test, epochs=100, evo_step=5, child_count=20, best_child_count=3):
     self.model = model
