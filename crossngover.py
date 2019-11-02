@@ -80,7 +80,7 @@ class CrossN:
         for family in tqdm(families):
             parents = [nets_named[f] for f in family]
             child = self.switch_weights(*parents)
-            yield сhild
+            yield child
     
     def history(self, net):
         for i, p in enumerate(net.ancestry.split(',')):
