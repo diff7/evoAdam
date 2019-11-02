@@ -5,7 +5,6 @@ from tqdm import tqdm
 import torch
 
 
-
 class CrossN:
     def __init__(self, n_combinations = 2, pmix = 0.5):
         self.p = pmix
