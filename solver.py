@@ -1,6 +1,8 @@
 import torch
 from tqdm import tqdm
 import random
+from logger import Logger
+
 class MaxSizeList(object):
 
     def __init__(self, max_length):
@@ -24,11 +26,12 @@ def mutate_weights(m):
         m.weight.data = m.weight.data + normal.rsample(m.weight.size()).cuda()
       
 class Solver:
-  def __init__(self, model, optim, loss_fn, val_fn, evo_optim, train, val, test, epochs=100, evo_step=5, child_count=20, best_child_count=3):
+  def __init__(self, model, optim, loss_fn, val_fn, evo_optim, train, val, test, log_dir, epochs=100, evo_step=5, child_count=20, best_child_count=3):
     self.model = model
     self.optim = optim
     self.loss_fn = loss_fn
     self.val_fn = val_fn
+    self.logger = Logger(log_dir)
     self.evo_optim = evo_optim
     self.train = train
     self.val = val
