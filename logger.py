@@ -2,15 +2,26 @@ import random
 import os
 import torch
 import matplotlib
+from datetime import datetime
 import matplotlib.pyplot as plt
 from tensorboardX import SummaryWriter
 
 class Logger(SummaryWriter):
-    def __init__(self, logdir):
-        if not os.path.exists(logdir):
-            os.mkdir(logdir)
-            print(f"{logdir} was created")
-        super(Logger, self).__init__(logdir)
+    def __init__(self, logdir, experiment_note):
+        today = datetime.now().strftime("%Y-%m-%d")
+        time = datetime.now().strftime("%H:%M")
+        
+        self.path = os.path.join('./'+today, logdir+'_'+time)
+        
+        if not os.path.exists('./'+today):
+            os.mkdir('./'+today)
+        if not os.path.exists(self.path):
+            os.mkdir(self.path)
+            print(f"{self.path} was created")
+        
+        with open(os.path.join(self.path, 'experiment_info.txt'), 'w') as f:
+            f.write(experiment_note+'\n')
+        super(Logger, self).__init__(self.path)
 
 
     def add_scalars(self, values):
@@ -28,9 +39,13 @@ class Logger(SummaryWriter):
             plt.ylabel("It's score")
             plt.title(k)
             self.add_figure(k, plt.gcf(), global_step=v['iteration'])
+            
+    def add_post_result(self, note):
+        with open(os.path.join(self.path, 'experiment_info.txt'),'a') as f:
+            f.write(note+'\n')
 
 if __name__ == "main":
-    logger = Logger("./logs")
+    logger = Logger("./logs",'test')
     logger.add_scalars({'Training loss (only backprop)':{'x':0,'y':0.9}, 'Validation loss (only backprop)':{'x':0,'y':0.99}})
     logger.compare_models({'Crossover test':{'iteration':1000, 'model_name':['A, B, C, D'], 'score':[27, 35, 14, 38]}})
     
