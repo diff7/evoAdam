@@ -54,7 +54,7 @@ class Solver:
         val,
         test,
         epochs=100,
-        evo_step=5,
+        evo_step=1,
         child_count=20,
         best_child_count=3,
         mode = 'normal'
@@ -78,6 +78,7 @@ class Solver:
     def start(self):
         print ('Start training')
         for epoch in range(self.epochs):
+            print(f'Epoch: {epoch}')
             if epoch % self.evo_step == 0:
                 self.model.eval()
                 if self.mode == 'normal':

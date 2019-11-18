@@ -7,17 +7,17 @@ import matplotlib.pyplot as plt
 from tensorboardX import SummaryWriter
 
 class Logger(SummaryWriter):
-    def __init__(self, logdir, experiment_note):
+    def __init__(self, logdir, experiment_note, folder_name='experiments'):
         today = datetime.now().strftime("%Y-%m-%d")
         time = datetime.now().strftime("%H:%M")
         
-        self.path = os.path.join('./'+today, logdir+'_'+time)
+        folder_n = folder_name
+        
+        self.path = os.path.join(folder_n,today, logdir+'_'+time)
         
         if not os.path.exists('./'+today):
-            os.mkdir('./'+today)
-        if not os.path.exists(self.path):
-            os.mkdir(self.path)
-            print(f"{self.path} was created")
+            os.makedirs(self.path, exist_ok=True)
+        
         
         with open(os.path.join(self.path, 'experiment_info.txt'), 'w') as f:
             f.write(experiment_note+'\n')
