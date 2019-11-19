@@ -73,6 +73,7 @@ class Solver:
         self.child_count = child_count
         self.best_child_count = best_child_count
         self.mode = mode
+        self.iteration = 0
     
     # The main call to start training
     def start(self):
@@ -85,10 +86,12 @@ class Solver:
                     best_child_score = self.batch_evolve_normal()
                 elif self.mode == 'simple':
                     best_child_score = self.batch_evolve_simple()
+                self.logger.add_scalars({'Evolution accuracy':{'x':self.iteration,'y':best_child_score}}
                 print(f"best child - {best_child_score}%")
             else:
                 self.model.train()
                 (loss, val_score) = self.batch_train()
+                self.logger.add_scalars({'Validation':{'x':self.iteration,'y':val_score}}
                 print ('[%d] loss: %.3f validation score: %.2f %%' \
                     % (epoch + 1, loss, val_score))
         self.model.eval()
@@ -111,6 +114,8 @@ class Solver:
             loss = self.loss_fn(outputs, labels)
             loss.backward()
             self.optim.step()
+            self.iteration+=1
+            self.logger.add_scalars({'Training loss (only backprop)':{'x':self.iteration,'y':loss.item()}}
         val_score = self.val_fn(self.model, self.val)
         return (loss.item(), val_score)
     
