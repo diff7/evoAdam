@@ -29,12 +29,13 @@ normal = torch.distributions.Normal(loc, scale)  # create a normal distribution 
 
 # Mutate weights if a layer is the weights layer
 
-def mutate_weights(model, keyword='weight'):
+def mutate_weights(model, lr, keyword='weight'):
     model_state_dict = model.state_dict()
     for layer_name in model_state_dict:
         if keyword in layer_name:
-            model_state_dict[layer_name] += \
-                normal.rsample(model_state_dict[layer_name].size()).cuda()
+            #print(layer_name,torch.sum(model_state_dict[layer_name]))
+            model_state_dict[layer_name]+= lr*normal.rsample(model_state_dict[layer_name].size()).cuda()
+            #print(layer_name,torch.sum(model_state_dict[layer_name]))
     model.load_state_dict(model_state_dict)
     model.cuda()
     return model
@@ -54,10 +55,12 @@ class Solver:
         val,
         test,
         epochs=100,
-        evo_step=1,
+        evo_step=5,
         child_count=20,
         best_child_count=3,
-        mode = 'normal'
+        mode = 'normal',
+        debug = True,
+        lr = 0.001
         ):
         self.model = model
         self.optim = optim
@@ -74,6 +77,8 @@ class Solver:
         self.best_child_count = best_child_count
         self.mode = mode
         self.iteration = 0
+        self.debug = debug
+        self.lr = lr
     
     # The main call to start training
     def start(self):
@@ -126,12 +131,12 @@ class Solver:
         Logger = self.logger
         best_kids = MaxSizeList(self.best_child_count)
         best_child = deepcopy(self.model)
-        best_child.apply(mutate_weights)
+        best_child = mutate_weights(best_child, self.lr)
         best_child_score = self.val_fn(best_child, self.val)
         best_kids.push(best_child)
         for _ in tqdm(range(self.child_count - 1)):
             child = deepcopy(self.model)
-            child.apply(mutate_weights)
+            child = mutate_weights(child, self.lr)
             child_score = self.val_fn(child, self.val)
             if child_score > best_child_score:
                 best_child_score = child_score
@@ -156,12 +161,14 @@ class Solver:
     # Mutate weights N times, choose 3 best candidates
     def batch_evolve_simple(self):
         best_child = deepcopy(self.model)
-        best_child.apply(mutate_weights)
+        best_child = mutate_weights(best_child, self.lr)
         best_child_score = self.val_fn(best_child, self.val)
         for _ in range(self.child_count - 1):
             child = deepcopy(self.model)
-            child.apply(mutate_weights)
+            child = mutate_weights(child, self.lr)
             child_score = self.val_fn(child, self.val)
+            if self.debug:
+                print('ch_score',child_score)
             if child_score > best_child_score:
                 best_child_score = child_score
                 best_child = deepcopy(child)
