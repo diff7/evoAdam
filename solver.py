@@ -103,6 +103,7 @@ class Solver:
         final_score = self.batch_test()
         print ('Training is finished\nvalidation score: %.2f %%' \
             % final_score)
+        self.logger.close()
         return self.model
 
     # Standard training
