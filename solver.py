@@ -58,7 +58,7 @@ class Solver:
         evo_step=5,
         child_count=20,
         best_child_count=3,
-        mode = 'normal',
+        mode = 'evo_cross',
         debug = True,
         lr = 0.001
         ):
@@ -88,9 +88,9 @@ class Solver:
             print(f'Epoch: {epoch}')
             if epoch % self.evo_step == 0:
                 self.model.eval()
-                if self.mode == 'normal':
+                if self.mode == 'evo_cross':
                     best_child_score = self.batch_evolve_normal()
-                elif self.mode == 'simple':
+                elif self.mode == 'evo_only':
                     best_child_score = self.batch_evolve_simple()
                 self.logger.add_scalars({'Evolution accuracy':{'x':self.iteration,'y':best_child_score}})
                 print(f"best child - {best_child_score}")
