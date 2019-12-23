@@ -101,6 +101,8 @@ class Solver:
                     % (epoch + 1, loss, val_score))
         self.model.eval()
         final_score = self.batch_test()
+        self.logger.add_scalars({'Final score':{'x':self.iteration,'y':final_score}})
+        self.logger.close()
         print ('Training is finished\nvalidation score: %.2f %%' \
             % final_score)
         return self.model
