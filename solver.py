@@ -105,6 +105,7 @@ class Solver:
         self.logger.close()
         print ('Training is finished\nvalidation score: %.2f %%' \
             % final_score)
+        self.logger.close()
         return self.model
 
     # Standard training
