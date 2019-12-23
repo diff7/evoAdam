@@ -79,6 +79,7 @@ class Solver:
         self.iteration = 0
         self.debug = debug
         self.lr = lr
+        torch.manual_seed(0)
     
     # The main call to start training
     def start(self):
@@ -99,10 +100,10 @@ class Solver:
                 self.logger.add_scalars({'Validation':{'x':self.iteration,'y':val_score}})
                 print('[%d] loss: %.3f validation score: %.2f %%' \
                     % (epoch + 1, loss, val_score))
-        self.model.eval()
-        final_score = self.batch_test()
-        self.logger.add_scalars({'Final score':{'x':self.iteration,'y':final_score}})
-        self.logger.close()
+            self.model.eval()
+            final_score = self.batch_test()
+            self.logger.add_scalars({'Final score':{'x':self.iteration,'y':final_score}})
+            self.logger.close()
         print ('Training is finished\nvalidation score: %.2f %%' \
             % final_score)
         self.logger.close()
