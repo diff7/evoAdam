@@ -58,7 +58,7 @@ class Solver:
         evo_step=5,
         child_count=20,
         best_child_count=3,
-        mode = 'normal',
+        mode = 'evo_cross',
         debug = True,
         lr = 0.001
         ):
@@ -79,21 +79,23 @@ class Solver:
         self.iteration = 0
         self.debug = debug
         self.lr = lr
-        torch.manual_seed(0)
+        #torch.manual_seed(0)
     
     # The main call to start training
     def start(self):
         print ('Start training')
         for epoch in range(self.epochs):
-            print(f'Epoch: {epoch}')
+            if self.debug:
+                print(f'Epoch: {epoch}')
             if epoch % self.evo_step == 0:
                 self.model.eval()
-                if self.mode == 'normal':
+                if self.mode == 'evo_cross':
                     best_child_score = self.batch_evolve_normal()
-                elif self.mode == 'simple':
+                elif self.mode == 'evo_only':
                     best_child_score = self.batch_evolve_simple()
-                self.logger.add_scalars({'Evolution accuracy':{'x':self.iteration,'y':best_child_score}})
-                print(f"best child - {best_child_score}")
+                    self.logger.add_scalars({'Evolution accuracy':{'x':self.iteration,'y':best_child_score}})
+                    if self.debug:
+                        print(f"best child - {best_child_score}")
             else:
                 self.model.train()
                 (loss, val_score) = self.batch_train()
@@ -104,7 +106,8 @@ class Solver:
             final_score = self.batch_test()
             self.logger.add_scalars({'Final score':{'x':self.iteration,'y':final_score}})
             self.logger.close()
-        print ('Training is finished\nvalidation score: %.2f %%' \
+        if self.debug:
+            print ('Training is finished\nvalidation score: %.2f %%' \
             % final_score)
         self.logger.close()
         return self.model
