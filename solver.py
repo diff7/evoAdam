@@ -100,7 +100,8 @@ class Solver:
                 self.model.train()
                 (loss, val_score) = self.batch_train()
                 self.logger.add_scalars({'Validation':{'x':self.iteration,'y':val_score}})
-                print('[%d] loss: %.3f validation score: %.2f %%' \
+                if self.debug:
+                    print('[%d] loss: %.3f validation score: %.2f %%' \
                     % (epoch + 1, loss, val_score))
             self.model.eval()
             final_score = self.batch_test()
@@ -141,7 +142,7 @@ class Solver:
         best_child = mutate_weights(best_child, self.lr)
         best_child_score = self.val_fn(best_child, self.val)
         best_kids.push(best_child)
-        for _ in tqdm(range(self.child_count - 1)):
+        for _ in range(self.child_count - 1):
             child = deepcopy(self.model)
             child = mutate_weights(child, self.lr)
             child_score = self.val_fn(child, self.val)
