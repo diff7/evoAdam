@@ -86,11 +86,14 @@ class Solver:
         print ('Start training')
         for epoch in range(self.epochs):
             if self.debug:
-                print(f'Epoch: {epoch}')
+                print(f'Epoch: {epoch}\t Iterations: {self.iteration}')
             if epoch % self.evo_step == 0:
                 self.model.eval()
                 if self.mode == 'evo_cross':
                     best_child_score = self.batch_evolve_normal()
+                    self.logger.add_scalars({'Evolution accuracy':{'x':self.iteration,'y':best_child_score}})
+                    if self.debug:
+                        print(f"best child - {best_child_score}")
                 elif self.mode == 'evo_only':
                     best_child_score = self.batch_evolve_simple()
                     self.logger.add_scalars({'Evolution accuracy':{'x':self.iteration,'y':best_child_score}})
