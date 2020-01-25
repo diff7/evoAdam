@@ -1,0 +1,8 @@
+./experiments/2020-01-25/_resnet_T_gradient_10_22:06
+net_name_resnet
+preptrained_T
+mode_gradient
+evo_step_10
+
+Start training
+Epoch: 0	 Iterations: 0

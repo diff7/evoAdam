@@ -82,6 +82,7 @@ class Solver:
         #torch.manual_seed(0)
     
     # The main call to start training
+    
     def start(self):
         print ('Start training')
         for epoch in range(self.epochs):

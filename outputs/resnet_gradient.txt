@@ -1,0 +1,13 @@
+./experiments/2020-01-25/_resnet_T_gradient_10_22:06
+net_name_resnet
+preptrained_T
+mode_gradient
+evo_step_10
+
+Start training
+Epoch: 0	 Iterations: 0
+Epoch: 1	 Iterations: 0
+[2] loss: 1.113 validation score: 71.38 %
+Epoch: 2	 Iterations: 232
+[3] loss: 0.541 validation score: 75.21 %
+Epoch: 3	 Iterations: 464
