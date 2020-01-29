@@ -4,6 +4,7 @@ import torch
 from tqdm import tqdm
 import random
 from copy import deepcopy
+import torch.nn as nn
 
 # To keep limited number of items in the list
 
@@ -29,17 +30,17 @@ normal = torch.distributions.Normal(loc, scale)  # create a normal distribution 
 
 # Mutate weights if a layer is the weights layer
 
-def mutate_weights(model, lr, keyword='weight'):
-    model_state_dict = model.state_dict()
-    for layer_name in model_state_dict:
-        if keyword in layer_name:
-            #print(layer_name,torch.sum(model_state_dict[layer_name]))
-            model_state_dict[layer_name]+= lr*normal.rsample(model_state_dict[layer_name].size()).cuda()
-            #print(layer_name,torch.sum(model_state_dict[layer_name]))
-    model.load_state_dict(model_state_dict)
-    model.cuda()
-    return model
+# def mutate_weights(model, lr, keyword='weight'):
+#     model_state_dict = model.state_dict()
+#     for layer_name in model_state_dict:
+#         if keyword in layer_name:
+#             model_state_dict[layer_name] += normal.rsample(model_state_dict[layer_name].size()).cuda()
+#     model.load_state_dict(model_state_dict)
+#     return model
 
+def mutate_weights(m):
+    if type(m) == nn.Linear or type(m) == nn.Conv2d:
+        m.weight.data = m.weight.data + normal.rsample(m.weight.size()).cuda()
 
 class Solver:
 
@@ -60,7 +61,8 @@ class Solver:
         best_child_count=3,
         mode = 'evo_cross',
         debug = True,
-        lr = 0.001
+        lr = 0.001,
+        device=0
         ):
         self.model = model
         self.optim = optim
@@ -79,16 +81,21 @@ class Solver:
         self.iteration = 0
         self.debug = debug
         self.lr = lr
+        self.device = device
         #torch.manual_seed(0)
     
     # The main call to start training
     
     def start(self):
         print ('Start training')
+        print('\nfirst test')
+        self.model.eval()
+        val_score = self.val_fn(self.model, self.val)
+        print(f"started score - {val_score}")
         for epoch in range(self.epochs):
             if self.debug:
                 print(f'Epoch: {epoch}\t Iterations: {self.iteration}')
-            if epoch % self.evo_step == 0:
+            if (epoch % self.evo_step == 0) and (self.mode != 'gradient'):
                 self.model.eval()
                 if self.mode == 'evo_cross':
                     best_child_score = self.batch_evolve_normal()
@@ -122,8 +129,8 @@ class Solver:
         loss = 0.0
         for (i, data) in enumerate(self.train, 0):
             (inputs, labels) = data
-            inputs = inputs.cuda()
-            labels = labels.cuda()
+            inputs = inputs.cuda(self.device)
+            labels = labels.cuda(self.device)
 
             self.optim.zero_grad()
 
@@ -144,11 +151,13 @@ class Solver:
         best_kids = MaxSizeList(self.best_child_count)
         best_child = deepcopy(self.model)
         best_child = mutate_weights(best_child, self.lr)
+        best_child.apply(mutate_weights)
         best_child_score = self.val_fn(best_child, self.val)
         best_kids.push(best_child)
         for _ in range(self.child_count - 1):
             child = deepcopy(self.model)
-            child = mutate_weights(child, self.lr)
+            #child = mutate_weights(child, self.lr)
+            child.apply(mutate_weights)
             child_score = self.val_fn(child, self.val)
             if child_score > best_child_score:
                 best_child_score = child_score
@@ -173,11 +182,13 @@ class Solver:
     # Mutate weights N times, choose 3 best candidates
     def batch_evolve_simple(self):
         best_child = deepcopy(self.model)
-        best_child = mutate_weights(best_child, self.lr)
+        #best_child = mutate_weights(best_child, self.lr)
+        best_child.apply(mutate_weights)
         best_child_score = self.val_fn(best_child, self.val)
         for _ in range(self.child_count - 1):
             child = deepcopy(self.model)
-            child = mutate_weights(child, self.lr)
+            #child = mutate_weights(child, self.lr)
+            child.apply(mutate_weights)
             child_score = self.val_fn(child, self.val)
             if self.debug:
                 print('ch_score',child_score)
