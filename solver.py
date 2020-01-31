@@ -24,7 +24,7 @@ class MaxSizeList(object):
 
 
 loc = 0
-scale = 0.001
+scale = 0.01
 normal = torch.distributions.Normal(loc, scale)  # create a normal distribution object
 
 
@@ -98,12 +98,12 @@ class Solver:
             if (epoch % self.evo_step == 0) and (self.mode != 'gradient'):
                 self.model.eval()
                 if self.mode == 'evo_cross':
-                    best_child_score = self.batch_evolve_normal()
+                    best_child_score, best_child_loss = self.batch_evolve_normal()
                     self.logger.add_scalars({'Evolution accuracy':{'x':self.iteration,'y':best_child_score}})
                     if self.debug:
                         print(f"best child - {best_child_score}")
                 elif self.mode == 'evo_only':
-                    best_child_score = self.batch_evolve_simple()
+                    best_child_score, best_child_loss = self.batch_evolve_simple()
                     self.logger.add_scalars({'Evolution accuracy':{'x':self.iteration,'y':best_child_score}})
                     if self.debug:
                         print(f"best child - {best_child_score}")
@@ -150,21 +150,21 @@ class Solver:
         Logger = self.logger
         best_kids = MaxSizeList(self.best_child_count)
         best_child = deepcopy(self.model)
-        best_child = mutate_weights(best_child, self.lr)
+        #best_child = mutate_weights(best_child, self.lr)
         best_child.apply(mutate_weights)
-        best_child_score = self.val_fn(best_child, self.val)
+        best_child_score, best_child_loss = self.val_fn(best_child, self.val, self.loss_fn)
         best_kids.push(best_child)
         for _ in range(self.child_count - 1):
             child = deepcopy(self.model)
             #child = mutate_weights(child, self.lr)
             child.apply(mutate_weights)
-            child_score = self.val_fn(child, self.val)
+            child_score, child_loss = self.val_fn(child, self.val, self.loss_fn)
             if child_score > best_child_score:
                 best_child_score = child_score
                 best_child = deepcopy(child)
                 best_kids.push(best_child)
         for child in self.evo_optim.breed(best_kids.get_list()):
-            child_score = self.val_fn(child, self.val)
+            child_score, child_loss = self.val_fn(child, self.val, self.loss_fn)
             if child_score > best_child_score:
                 best_child_score = child_score
                 best_child = deepcopy(child)
@@ -177,19 +177,19 @@ class Solver:
             self.optim.add_param_group(param_group)
         del child
         del best_child
-        return best_child_score
+        return best_child_score, best_child_loss
     
     # Mutate weights N times, choose 3 best candidates
     def batch_evolve_simple(self):
         best_child = deepcopy(self.model)
         #best_child = mutate_weights(best_child, self.lr)
         best_child.apply(mutate_weights)
-        best_child_score = self.val_fn(best_child, self.val)
+        best_child_score, best_child_loss = self.val_fn(best_child, self.val, self.loss_fn)
         for _ in range(self.child_count - 1):
             child = deepcopy(self.model)
             #child = mutate_weights(child, self.lr)
             child.apply(mutate_weights)
-            child_score = self.val_fn(child, self.val)
+            child_score, child_loss = self.val_fn(child, self.val, self.loss_fn)
             if self.debug:
                 print('ch_score',child_score)
             if child_score > best_child_score:
@@ -204,7 +204,7 @@ class Solver:
             self.optim.add_param_group(param_group)
         del child
         del best_child
-        return best_child_score
+        return best_child_score, best_child_loss
     
     def batch_test(self):
         return self.val_fn(self.model, self.test)

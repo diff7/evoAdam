@@ -1,4 +1,4 @@
-./experiments/2020-01-29/_resnet18_256_test_lr_F_evo_only_10_20:30
+./experiments/2020-01-31/_resnet18_256_test_lr_F_evo_only_10_19:06
 net_name_resnet18_256_test_lr
 preptrained_F
 mode_evo_only
@@ -9,27 +9,27 @@ Start training
 first test
 started score - 0.0
 Epoch: 0	 Iterations: 0
+ch_score 0.03
+ch_score 0.1
+ch_score 0.26
+ch_score 0.16
+ch_score 4.79
 ch_score 0.0
+ch_score 0.03
+ch_score 0.56
+ch_score 0.01
 ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-ch_score 0.0
-best child - 0.0
+ch_score 8.56
+ch_score 8.16
+ch_score 5.2
+ch_score 5.13
+ch_score 0.48
+ch_score 2.07
+ch_score 0.7
+ch_score 0.16
+ch_score 0.18
+best child - 8.56
 Epoch: 1	 Iterations: 0
-[2] loss: 1.720 validation score: 45.98 %
+[2] loss: 1.220 validation score: 59.06 %
 Training is finished
-validation score: 46.17 %
+validation score: 59.18 %
