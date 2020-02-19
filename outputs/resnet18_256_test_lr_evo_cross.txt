@@ -1,4 +1,4 @@
-./experiments/2020-01-31/_resnet18_256_test_lr_F_evo_cross_10_19:05
+./experiments/2020-02-19/_resnet18_256_test_lr_F_evo_cross_10_06:55
 net_name_resnet18_256_test_lr
 preptrained_F
 mode_evo_cross
@@ -8,9 +8,3 @@ Start training
 
 first test
 started score - 0.0
-Epoch: 0	 Iterations: 0
-best child - 5.03
-Epoch: 1	 Iterations: 0
-[2] loss: 1.116 validation score: 60.65 %
-Training is finished
-validation score: 61.00 %

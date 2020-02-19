@@ -1,4 +1,4 @@
-./experiments/2020-01-31/_resnet18_256_test_lr_F_gradient_10_19:04
+./experiments/2020-02-19/_resnet18_256_test_lr_F_gradient_10_08:23
 net_name_resnet18_256_test_lr
 preptrained_F
 mode_gradient
@@ -7,10 +7,206 @@ evo_step_10
 Start training
 
 first test
-started score - 0.0
+started score - 0.009765625
 Epoch: 0	 Iterations: 0
-[1] loss: 1.209 validation score: 60.94 %
-Epoch: 1	 Iterations: 196
-[2] loss: 0.694 validation score: 67.00 %
+[1] loss: 1.166 validation score: 58.80 %
+Epoch: 1	 Iterations: 98
+[2] loss: 1.092 validation score: 59.14 %
+Epoch: 2	 Iterations: 196
+[3] loss: 0.876 validation score: 64.11 %
+Epoch: 3	 Iterations: 294
+[4] loss: 0.741 validation score: 65.48 %
+Epoch: 4	 Iterations: 392
+[5] loss: 0.624 validation score: 65.89 %
+Epoch: 5	 Iterations: 490
+[6] loss: 0.592 validation score: 66.92 %
+Epoch: 6	 Iterations: 588
+[7] loss: 0.447 validation score: 65.68 %
+Epoch: 7	 Iterations: 686
+[8] loss: 0.387 validation score: 65.98 %
+Epoch: 8	 Iterations: 784
+[9] loss: 0.405 validation score: 68.68 %
+Epoch: 9	 Iterations: 882
+[10] loss: 0.275 validation score: 66.29 %
+Epoch: 10	 Iterations: 980
+[11] loss: 0.250 validation score: 68.97 %
+Epoch: 11	 Iterations: 1078
+[12] loss: 0.268 validation score: 67.76 %
+Epoch: 12	 Iterations: 1176
+[13] loss: 0.191 validation score: 67.86 %
+Epoch: 13	 Iterations: 1274
+[14] loss: 0.184 validation score: 66.70 %
+Epoch: 14	 Iterations: 1372
+[15] loss: 0.257 validation score: 68.59 %
+Epoch: 15	 Iterations: 1470
+[16] loss: 0.187 validation score: 68.19 %
+Epoch: 16	 Iterations: 1568
+[17] loss: 0.125 validation score: 67.87 %
+Epoch: 17	 Iterations: 1666
+[18] loss: 0.058 validation score: 69.01 %
+Epoch: 18	 Iterations: 1764
+[19] loss: 0.078 validation score: 69.04 %
+Epoch: 19	 Iterations: 1862
+[20] loss: 0.055 validation score: 69.03 %
+Epoch: 20	 Iterations: 1960
+[21] loss: 0.061 validation score: 69.01 %
+Epoch: 21	 Iterations: 2058
+[22] loss: 0.072 validation score: 69.06 %
+Epoch: 22	 Iterations: 2156
+[23] loss: 0.050 validation score: 70.06 %
+Epoch: 23	 Iterations: 2254
+[24] loss: 0.032 validation score: 68.85 %
+Epoch: 24	 Iterations: 2352
+[25] loss: 0.061 validation score: 69.69 %
+Epoch: 25	 Iterations: 2450
+[26] loss: 0.032 validation score: 69.71 %
+Epoch: 26	 Iterations: 2548
+[27] loss: 0.019 validation score: 69.80 %
+Epoch: 27	 Iterations: 2646
+[28] loss: 0.059 validation score: 70.12 %
+Epoch: 28	 Iterations: 2744
+[29] loss: 0.025 validation score: 69.95 %
+Epoch: 29	 Iterations: 2842
+[30] loss: 0.039 validation score: 69.34 %
+Epoch: 30	 Iterations: 2940
+[31] loss: 0.025 validation score: 70.78 %
+Epoch: 31	 Iterations: 3038
+[32] loss: 0.086 validation score: 70.60 %
+Epoch: 32	 Iterations: 3136
+[33] loss: 0.055 validation score: 69.30 %
+Epoch: 33	 Iterations: 3234
+[34] loss: 0.021 validation score: 69.85 %
+Epoch: 34	 Iterations: 3332
+[35] loss: 0.010 validation score: 70.76 %
+Epoch: 35	 Iterations: 3430
+[36] loss: 0.045 validation score: 70.09 %
+Epoch: 36	 Iterations: 3528
+[37] loss: 0.016 validation score: 70.92 %
+Epoch: 37	 Iterations: 3626
+[38] loss: 0.026 validation score: 70.49 %
+Epoch: 38	 Iterations: 3724
+[39] loss: 0.019 validation score: 70.89 %
+Epoch: 39	 Iterations: 3822
+[40] loss: 0.053 validation score: 70.12 %
+Epoch: 40	 Iterations: 3920
+[41] loss: 0.016 validation score: 69.28 %
+Epoch: 41	 Iterations: 4018
+[42] loss: 0.026 validation score: 70.41 %
+Epoch: 42	 Iterations: 4116
+[43] loss: 0.035 validation score: 69.88 %
+Epoch: 43	 Iterations: 4214
+[44] loss: 0.022 validation score: 70.75 %
+Epoch: 44	 Iterations: 4312
+[45] loss: 0.021 validation score: 70.13 %
+Epoch: 45	 Iterations: 4410
+[46] loss: 0.053 validation score: 70.80 %
+Epoch: 46	 Iterations: 4508
+[47] loss: 0.068 validation score: 71.21 %
+Epoch: 47	 Iterations: 4606
+[48] loss: 0.019 validation score: 70.98 %
+Epoch: 48	 Iterations: 4704
+[49] loss: 0.022 validation score: 71.34 %
+Epoch: 49	 Iterations: 4802
+[50] loss: 0.041 validation score: 70.13 %
+Epoch: 50	 Iterations: 4900
+[51] loss: 0.015 validation score: 71.28 %
+Epoch: 51	 Iterations: 4998
+[52] loss: 0.043 validation score: 71.14 %
+Epoch: 52	 Iterations: 5096
+[53] loss: 0.029 validation score: 70.77 %
+Epoch: 53	 Iterations: 5194
+[54] loss: 0.011 validation score: 70.44 %
+Epoch: 54	 Iterations: 5292
+[55] loss: 0.030 validation score: 70.91 %
+Epoch: 55	 Iterations: 5390
+[56] loss: 0.013 validation score: 70.72 %
+Epoch: 56	 Iterations: 5488
+[57] loss: 0.019 validation score: 70.74 %
+Epoch: 57	 Iterations: 5586
+[58] loss: 0.002 validation score: 71.14 %
+Epoch: 58	 Iterations: 5684
+[59] loss: 0.013 validation score: 70.73 %
+Epoch: 59	 Iterations: 5782
+[60] loss: 0.025 validation score: 71.35 %
+Epoch: 60	 Iterations: 5880
+[61] loss: 0.022 validation score: 71.33 %
+Epoch: 61	 Iterations: 5978
+[62] loss: 0.024 validation score: 69.82 %
+Epoch: 62	 Iterations: 6076
+[63] loss: 0.026 validation score: 70.65 %
+Epoch: 63	 Iterations: 6174
+[64] loss: 0.042 validation score: 70.40 %
+Epoch: 64	 Iterations: 6272
+[65] loss: 0.027 validation score: 70.84 %
+Epoch: 65	 Iterations: 6370
+[66] loss: 0.044 validation score: 69.83 %
+Epoch: 66	 Iterations: 6468
+[67] loss: 0.050 validation score: 70.08 %
+Epoch: 67	 Iterations: 6566
+[68] loss: 0.053 validation score: 69.90 %
+Epoch: 68	 Iterations: 6664
+[69] loss: 0.031 validation score: 70.92 %
+Epoch: 69	 Iterations: 6762
+[70] loss: 0.002 validation score: 71.39 %
+Epoch: 70	 Iterations: 6860
+[71] loss: 0.022 validation score: 70.62 %
+Epoch: 71	 Iterations: 6958
+[72] loss: 0.022 validation score: 71.22 %
+Epoch: 72	 Iterations: 7056
+[73] loss: 0.006 validation score: 71.10 %
+Epoch: 73	 Iterations: 7154
+[74] loss: 0.020 validation score: 71.58 %
+Epoch: 74	 Iterations: 7252
+[75] loss: 0.015 validation score: 70.96 %
+Epoch: 75	 Iterations: 7350
+[76] loss: 0.026 validation score: 71.36 %
+Epoch: 76	 Iterations: 7448
+[77] loss: 0.009 validation score: 71.74 %
+Epoch: 77	 Iterations: 7546
+[78] loss: 0.034 validation score: 71.22 %
+Epoch: 78	 Iterations: 7644
+[79] loss: 0.027 validation score: 71.04 %
+Epoch: 79	 Iterations: 7742
+[80] loss: 0.020 validation score: 70.51 %
+Epoch: 80	 Iterations: 7840
+[81] loss: 0.009 validation score: 71.29 %
+Epoch: 81	 Iterations: 7938
+[82] loss: 0.017 validation score: 71.19 %
+Epoch: 82	 Iterations: 8036
+[83] loss: 0.027 validation score: 70.99 %
+Epoch: 83	 Iterations: 8134
+[84] loss: 0.010 validation score: 70.48 %
+Epoch: 84	 Iterations: 8232
+[85] loss: 0.003 validation score: 71.20 %
+Epoch: 85	 Iterations: 8330
+[86] loss: 0.003 validation score: 71.48 %
+Epoch: 86	 Iterations: 8428
+[87] loss: 0.009 validation score: 72.05 %
+Epoch: 87	 Iterations: 8526
+[88] loss: 0.020 validation score: 71.00 %
+Epoch: 88	 Iterations: 8624
+[89] loss: 0.020 validation score: 71.30 %
+Epoch: 89	 Iterations: 8722
+[90] loss: 0.007 validation score: 71.58 %
+Epoch: 90	 Iterations: 8820
+[91] loss: 0.004 validation score: 71.35 %
+Epoch: 91	 Iterations: 8918
+[92] loss: 0.006 validation score: 70.60 %
+Epoch: 92	 Iterations: 9016
+[93] loss: 0.024 validation score: 71.77 %
+Epoch: 93	 Iterations: 9114
+[94] loss: 0.021 validation score: 71.02 %
+Epoch: 94	 Iterations: 9212
+[95] loss: 0.015 validation score: 71.04 %
+Epoch: 95	 Iterations: 9310
+[96] loss: 0.013 validation score: 71.34 %
+Epoch: 96	 Iterations: 9408
+[97] loss: 0.016 validation score: 71.42 %
+Epoch: 97	 Iterations: 9506
+[98] loss: 0.001 validation score: 71.78 %
+Epoch: 98	 Iterations: 9604
+[99] loss: 0.016 validation score: 72.15 %
+Epoch: 99	 Iterations: 9702
+[100] loss: 0.006 validation score: 71.87 %
 Training is finished
-validation score: 67.17 %
+validation score: 71.87 %

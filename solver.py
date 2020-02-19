@@ -40,7 +40,11 @@ normal = torch.distributions.Normal(loc, scale)  # create a normal distribution 
 
 def mutate_weights(m):
     if type(m) == nn.Linear or type(m) == nn.Conv2d:
-        m.weight.data = m.weight.data + normal.rsample(m.weight.size()).cuda()
+        m.weight.data = (m.weight.data + torch.empty(m.weight.size()).uniform_(-1, 1).cuda())/2
+        try:
+            m.bias.data = (m.bias.data + torch.empty(m.bias.size()).uniform_(-1, 1).cuda())/2
+        except:
+            pass
 
 class Solver:
 
@@ -89,14 +93,14 @@ class Solver:
     def start(self):
         print ('Start training')
         print('\nfirst test')
-        self.model.eval()
+        self.model.train()
         val_score = self.val_fn(self.model, self.val)
         print(f"started score - {val_score}")
         for epoch in range(self.epochs):
             if self.debug:
                 print(f'Epoch: {epoch}\t Iterations: {self.iteration}')
             if (epoch % self.evo_step == 0) and (self.mode != 'gradient'):
-                self.model.eval()
+                #self.model.eval()
                 if self.mode == 'evo_cross':
                     best_child_score, best_child_loss = self.batch_evolve_normal()
                     self.logger.add_scalars({'Evolution accuracy':{'x':self.iteration,'y':best_child_score}})
@@ -108,8 +112,8 @@ class Solver:
                     if self.debug:
                         print(f"best child - {best_child_score}")
             else:
-                self.model.train()
-                (loss, val_score) = self.batch_train()
+                #self.model.train()
+                loss, val_score = self.batch_train()
                 self.logger.add_scalars({'Validation':{'x':self.iteration,'y':val_score}})
                 if self.debug:
                     print('[%d] loss: %.3f validation score: %.2f %%' \
@@ -169,12 +173,7 @@ class Solver:
                 best_child_score = child_score
                 best_child = deepcopy(child)
         self.model = deepcopy(best_child)
-        self.optim.param_groups = []
-        param_groups = list(self.model.parameters())
-        if not isinstance(param_groups[0], dict):
-            param_groups = [{'params': param_groups}]
-        for param_group in param_groups:
-            self.optim.add_param_group(param_group)
+        self.optim = torch.optim.Adam(self.model.parameters(), lr=self.lr)
         del child
         del best_child
         return best_child_score, best_child_loss
@@ -195,13 +194,8 @@ class Solver:
             if child_score > best_child_score:
                 best_child_score = child_score
                 best_child = deepcopy(child)
-                self.model = deepcopy(best_child)  
-        self.optim.param_groups = []
-        param_groups = list(self.model.parameters())
-        if not isinstance(param_groups[0], dict):
-            param_groups = [{'params': param_groups}]
-        for param_group in param_groups:
-            self.optim.add_param_group(param_group)
+        self.model = deepcopy(best_child)  
+        self.optim = torch.optim.Adam(self.model.parameters(), lr=self.lr)
         del child
         del best_child
         return best_child_score, best_child_loss
