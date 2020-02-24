@@ -81,6 +81,7 @@ class Solver:
         
         
     def mutate_weights(self,l):
+        # RANDOM GRADIENT UPDATE
         if 'Conv' in l.__class__.__name__:
             if l.weight.requires_grad:
                 grad = l.weight.grad
@@ -221,13 +222,13 @@ class Solver:
             # sort best score by train / val
             child_score, loss_score  = self.val_fn(child, self.val, self.loss_fn)
             if self.debug:
-                print('VAL: ch_acc_score',child_score, 'ch_loss', loss_score)
-            if loss_score < bc_loss_score:
+                print('VAL: ch_acc_score',child_score, 'ch_loss', loss_score, 'best_score:',best_child_score)
+            if child_score > best_child_score:
                 bc_loss_score = loss_score
                 best_child_score = child_score
                 best_child = deepcopy(child)
         
-        print('BEST: ch_accuracy_score', child_score, 'ch_loss', loss_score)
+        print('BEST: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score)
         self.model = deepcopy(best_child)  
         self.optim.param_groups = []
         param_groups = list(self.model.parameters())

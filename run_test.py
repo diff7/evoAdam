@@ -49,7 +49,7 @@ def train_models(params, net, device=0):
     lr = 0.001
 
     #optimizer = torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9, weight_decay=0.0001)
-    optimizer = torch.optim.Adam(net.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0,amsgrad=False)
+    optimizer = torch.optim.SGD(net.parameters(), lr=lr)
 
     criterion = nn.CrossEntropyLoss()
     evo_optim = CrossN()
