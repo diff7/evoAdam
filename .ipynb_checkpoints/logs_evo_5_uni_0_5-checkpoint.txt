@@ -1,0 +1,15 @@
+Files already downloaded and verified
+Files already downloaded and verified
+training
+TRAINING MODE EVO_ONLY
+./experiments/2020-02-25/_resnet18_SGD__05__F_SGD__05__evo_only_SGD__05__5_SGD__05__12:58
+net_name_resnet18
+preptrained_F
+mode_evo_only
+evo_step_5
+
+Start training
+
+first test
+started score - 0.0
+Epoch: 1	 Iterations: 0

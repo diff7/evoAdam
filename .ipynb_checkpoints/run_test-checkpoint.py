@@ -38,7 +38,7 @@ def train_models(params, net, device=0):
     path = ''
     for key in params:
         experiment_note += key +'_'+ params[key]+'\n'
-        path +=  '_'+ params[key]
+        path +=  '_'+ params[key]+'_ADAM_'+'_1_'
 
 
     logger = Logger(path, experiment_note)
@@ -49,7 +49,7 @@ def train_models(params, net, device=0):
     lr = 0.001
 
     #optimizer = torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9, weight_decay=0.0001)
-    optimizer = torch.optim.SGD(net.parameters(), lr=lr)
+    optimizer = torch.optim.Adam(net.parameters(), lr=lr)
 
     criterion = nn.CrossEntropyLoss()
     evo_optim = CrossN()
@@ -87,9 +87,9 @@ def train_models(params, net, device=0):
         trainloader,
         testloader,
         testloader,
-        epochs=30,
+        epochs=50,
         evo_step=evo_step,
-        child_count=20,
+        child_count=30,
         best_child_count=3,
         mode=mode,
         debug=True,
@@ -105,9 +105,9 @@ def train_models(params, net, device=0):
 
 
 def train_three_types(model, TF, name):
-    modes = [ 'evo_only', 'gradient', 'evo_cross']
+    modes = [ 'evo_only', 'gradient']  #'evo_cross'
 
-    evo_step = 2
+    evo_step = 5
 
     for mode in modes:
 #         orig_stdout = sys.stdout
@@ -121,9 +121,9 @@ def train_three_types(model, TF, name):
              'evo_step':str(evo_step)}
         temp_model = copy.deepcopy(model)
         train_models(params, temp_model)
-#         sys.stdout = orig_stdout
 #         f.close()
-#         torch.cuda.empty_cache()
+#         sys.stdout = orig_stdout
+        torch.cuda.empty_cache()
     print('Finished')
 
 if __name__ == "__main__":

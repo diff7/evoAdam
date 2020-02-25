@@ -1,0 +1,19 @@
+Files already downloaded and verified
+Files already downloaded and verified
+training
+TRAINING MODE EVO_ONLY
+./experiments/2020-02-25/_resnet18_ADAM__1__F_ADAM__1__evo_only_ADAM__1__5_ADAM__1__14:06
+net_name_resnet18
+preptrained_F
+mode_evo_only
+evo_step_5
+
+Start training
+
+first test
+started score - 0.0
+Epoch: 1	 Iterations: 0
+[2] loss: 1.191 validation score: 60.01 %
+Epoch: 2	 Iterations: 196
+[3] loss: 0.628 validation score: 67.25 %
+Epoch: 3	 Iterations: 392

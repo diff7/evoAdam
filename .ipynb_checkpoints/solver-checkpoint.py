@@ -52,7 +52,7 @@ class Solver:
         test,
         epochs=100,
         evo_step=5,
-        child_count=20,
+        child_count=40,
         best_child_count=3,
         mode = 'evo_cross',
         debug = True,
@@ -213,6 +213,7 @@ class Solver:
             child = deepcopy(self.model)
             #child = mutate_weights(child, self.lr)
             
+            self.iteration+=1
             self.model.train()
             outputs = child(self.last_inputs)
             loss = self.loss_fn(outputs, self.last_labels)

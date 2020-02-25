@@ -1,0 +1,73 @@
+TRAINING MODE GRADIENT
+./experiments/2020-02-24/_resnet18_F_gradient_5_23:03
+net_name_resnet18
+preptrained_F
+mode_gradient
+evo_step_5
+
+Start training
+
+first test
+started score - 0.0
+Epoch: 1	 Iterations: 0
+[2] loss: 2.554 validation score: 30.01 %
+Epoch: 2	 Iterations: 196
+[3] loss: 2.074 validation score: 35.29 %
+Epoch: 3	 Iterations: 392
+[4] loss: 1.788 validation score: 38.66 %
+Epoch: 4	 Iterations: 588
+[5] loss: 1.613 validation score: 40.75 %
+Epoch: 5	 Iterations: 784
+[6] loss: 1.471 validation score: 42.40 %
+Epoch: 6	 Iterations: 980
+[7] loss: 1.344 validation score: 43.66 %
+Epoch: 7	 Iterations: 1176
+[8] loss: 1.239 validation score: 44.61 %
+Epoch: 8	 Iterations: 1372
+[9] loss: 1.140 validation score: 45.26 %
+Epoch: 9	 Iterations: 1568
+[10] loss: 1.051 validation score: 46.05 %
+Epoch: 10	 Iterations: 1764
+[11] loss: 0.969 validation score: 46.63 %
+Epoch: 11	 Iterations: 1960
+[12] loss: 0.895 validation score: 47.04 %
+Epoch: 12	 Iterations: 2156
+[13] loss: 0.831 validation score: 47.24 %
+Epoch: 13	 Iterations: 2352
+[14] loss: 0.767 validation score: 47.83 %
+Epoch: 14	 Iterations: 2548
+[15] loss: 0.709 validation score: 48.26 %
+Epoch: 15	 Iterations: 2744
+[16] loss: 0.652 validation score: 48.28 %
+Epoch: 16	 Iterations: 2940
+[17] loss: 0.604 validation score: 48.31 %
+Epoch: 17	 Iterations: 3136
+[18] loss: 0.554 validation score: 48.23 %
+Epoch: 18	 Iterations: 3332
+[19] loss: 0.509 validation score: 48.58 %
+Epoch: 19	 Iterations: 3528
+[20] loss: 0.471 validation score: 48.41 %
+Epoch: 20	 Iterations: 3724
+[21] loss: 0.433 validation score: 48.84 %
+Epoch: 21	 Iterations: 3920
+[22] loss: 0.403 validation score: 48.90 %
+Epoch: 22	 Iterations: 4116
+[23] loss: 0.359 validation score: 48.86 %
+Epoch: 23	 Iterations: 4312
+[24] loss: 0.335 validation score: 49.01 %
+Epoch: 24	 Iterations: 4508
+[25] loss: 0.295 validation score: 49.15 %
+Epoch: 25	 Iterations: 4704
+[26] loss: 0.275 validation score: 49.17 %
+Epoch: 26	 Iterations: 4900
+[27] loss: 0.255 validation score: 49.31 %
+Epoch: 27	 Iterations: 5096
+[28] loss: 0.234 validation score: 49.34 %
+Epoch: 28	 Iterations: 5292
+[29] loss: 0.207 validation score: 49.24 %
+Epoch: 29	 Iterations: 5488
+[30] loss: 0.200 validation score: 49.40 %
+Epoch: 30	 Iterations: 5684
+[31] loss: 0.173 validation score: 49.31 %
+Training is finished
+validation score: 49.42 %

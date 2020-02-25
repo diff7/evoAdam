@@ -52,7 +52,7 @@ class Solver:
         test,
         epochs=100,
         evo_step=5,
-        child_count=20,
+        child_count=40,
         best_child_count=3,
         mode = 'evo_cross',
         debug = True,
@@ -213,6 +213,7 @@ class Solver:
             child = deepcopy(self.model)
             #child = mutate_weights(child, self.lr)
             
+            self.iteration+=1
             self.model.train()
             outputs = child(self.last_inputs)
             loss = self.loss_fn(outputs, self.last_labels)
@@ -223,7 +224,7 @@ class Solver:
             child_score, loss_score  = self.val_fn(child, self.val, self.loss_fn)
             if self.debug:
                 print('VAL: ch_acc_score',child_score, 'ch_loss', loss_score, 'best_score:',best_child_score)
-            if child_score > best_child_score:f
+            if child_score > best_child_score:
                 bc_loss_score = loss_score
                 best_child_score = child_score
                 best_child = deepcopy(child)
