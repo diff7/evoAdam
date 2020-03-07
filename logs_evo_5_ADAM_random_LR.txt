@@ -1,0 +1,181 @@
+Files already downloaded and verified
+Files already downloaded and verified
+training
+TRAINING MODE EVO_ONLY
+./experiments/2020-02-25/_resnet18_ADAM__1__F_ADAM__1__evo_only_ADAM__1__5_ADAM__1__15:11
+net_name_resnet18
+preptrained_F
+mode_evo_only
+evo_step_5
+
+Start training
+
+first test
+started score - 0.0
+Epoch: 1	 Iterations: 0
+[2] loss: 1.188 validation score: 60.91 %
+Epoch: 2	 Iterations: 196
+[3] loss: 0.706 validation score: 67.21 %
+Epoch: 3	 Iterations: 392
+[4] loss: 0.475 validation score: 67.12 %
+Epoch: 4	 Iterations: 588
+[5] loss: 0.455 validation score: 68.68 %
+Epoch: 5	 Iterations: 784
+BASE SCORE val: acc: 68.82, loss: 0.0037320673000067472
+VAL: ch_acc_score 68.82 ch_loss tensor(0.0037, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.68 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.68 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.66 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.67 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.69 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.68 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.68 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.68 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.67 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.68 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.67 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.67 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.68 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.68 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.68 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.67 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.66 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.68 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.69 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.67 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.67 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.68 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.69 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.68 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.68 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.67 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.67 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+VAL: ch_acc_score 68.67 ch_loss tensor(0.0038, device='cuda:0') best_score: 68.82
+BEST: ch_accuracy_score 68.82 ch_loss tensor(0.0037, device='cuda:0')
+best child - 0.0037320673000067472
+Epoch: 6	 Iterations: 813
+[7] loss: 0.415 validation score: 70.49 %
+Epoch: 7	 Iterations: 1009
+[8] loss: 0.246 validation score: 70.84 %
+Epoch: 8	 Iterations: 1205
+[9] loss: 0.182 validation score: 70.39 %
+Epoch: 9	 Iterations: 1401
+[10] loss: 0.151 validation score: 70.65 %
+Epoch: 10	 Iterations: 1597
+BASE SCORE val: acc: 71.28, loss: 0.004242600407451391
+VAL: ch_acc_score 71.27 ch_loss tensor(0.0042, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.64 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.64 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.64 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.63 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.64 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.64 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.64 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.64 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.64 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.65 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+VAL: ch_acc_score 70.64 ch_loss tensor(0.0043, device='cuda:0') best_score: 71.28
+BEST: ch_accuracy_score 71.28 ch_loss tensor(0.0042, device='cuda:0')
+best child - 0.004242600407451391
+Epoch: 11	 Iterations: 1626
+[12] loss: 0.211 validation score: 70.65 %
+Epoch: 12	 Iterations: 1822
+[13] loss: 0.123 validation score: 71.77 %
+Epoch: 13	 Iterations: 2018
+[14] loss: 0.140 validation score: 71.23 %
+Epoch: 14	 Iterations: 2214
+[15] loss: 0.062 validation score: 72.38 %
+Epoch: 15	 Iterations: 2410
+BASE SCORE val: acc: 72.76, loss: 0.004801575560122728
+VAL: ch_acc_score 72.75 ch_loss tensor(0.0048, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+VAL: ch_acc_score 72.38 ch_loss tensor(0.0049, device='cuda:0') best_score: 72.76
+BEST: ch_accuracy_score 72.76 ch_loss tensor(0.0048, device='cuda:0')
+best child - 0.004801575560122728
+Epoch: 16	 Iterations: 2439
+[17] loss: 0.044 validation score: 71.97 %
+Epoch: 17	 Iterations: 2635
+[18] loss: 0.021 validation score: 72.22 %
+Epoch: 18	 Iterations: 2831
+[19] loss: 0.055 validation score: 72.14 %
+Epoch: 19	 Iterations: 3027
+[20] loss: 0.065 validation score: 72.12 %
+Epoch: 20	 Iterations: 3223
+BASE SCORE val: acc: 72.28, loss: 0.005684447940438986
+VAL: ch_acc_score 72.28 ch_loss tensor(0.0057, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+VAL: ch_acc_score 72.12 ch_loss tensor(0.0059, device='cuda:0') best_score: 72.28
+BEST: ch_accuracy_score 72.28 ch_loss tensor(0.0057, device='cuda:0')
+best child - 0.005684447940438986
+Epoch: 21	 Iterations: 3252
+[22] loss: 0.021 validation score: 72.46 %
+Epoch: 22	 Iterations: 3448

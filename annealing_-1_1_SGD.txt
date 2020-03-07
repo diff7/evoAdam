@@ -1,0 +1,17 @@
+Files already downloaded and verified
+Files already downloaded and verified
+training
+TRAINING MODE EVO_ONLY
+./experiments/2020-03-07/_resnet18SGD_1__FSGD_1__evo_onlySGD_1__2SGD_1__23:37
+net_name_resnet18
+preptrained_F
+mode_evo_only
+evo_step_2
+
+Start training
+
+first test
+started score - 0.0
+Epoch: 1	 Iterations: 0
+[2] loss: 1.753 validation score: 44.95 %
+Epoch: 2	 Iterations: 196

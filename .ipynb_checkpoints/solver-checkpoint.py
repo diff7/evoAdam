@@ -52,7 +52,7 @@ class Solver:
         test,
         epochs=100,
         evo_step=5,
-        child_count=40,
+        child_count=60,
         best_child_count=3,
         mode = 'evo_cross',
         debug = True,
@@ -86,10 +86,14 @@ class Solver:
             if l.weight.requires_grad:
                 grad = l.weight.grad
                 if not grad is None:
+                    score = self.acc_score/100
+                    coef = 1000**(0.5-score)
+                    #grad[grad <0] = 0
                     # CHANGE TO 0 - 1 to check later
                     uniform = torch.distributions.Uniform(-1,1)
                     noise = uniform.sample(sample_shape=l.weight.grad.size()).cuda()
-                    l.weight.data = l.weight.data - self.lr*noise*grad
+                    #random_lr = self.lr*random.uniform(1, 5)
+                    l.weight.data = l.weight.data - self.lri*coef*noise*grad
 
     
     # The main call to start training
@@ -200,27 +204,27 @@ class Solver:
     # Mutate weights N times, choose 3 best candidates
     def batch_evolve_simple(self):
 
-        best_child = deepcopy(self.model)
-        #best_child = mutate_weights(best_child, self.lr)
-        
-#         outputs = self.model(self.last_inputs)
-#         loss = self.loss_fn(outputs, self.last_labels)
-#         loss.backward()
-#         best_child.apply(self.mutate_weights)
+      
+        best_child = deepcopy(self.model)   
+        outputs = best_child(self.last_inputs)
+        loss = self.loss_fn(outputs, self.last_labels)
+        loss.backward()
+            
+        best_child.apply(self.mutate_weights)
         best_child_score,  bc_loss_score = self.val_fn(best_child, self.val, self.loss_fn)
         print(f'BASE SCORE val: acc: {best_child_score}, loss: {bc_loss_score}')
         for _ in range(self.child_count - 1):
             child = deepcopy(self.model)
-            #child = mutate_weights(child, self.lr)
             
             self.iteration+=1
             self.model.train()
+            
             outputs = child(self.last_inputs)
             loss = self.loss_fn(outputs, self.last_labels)
             loss.backward()
             child.apply(self.mutate_weights)
             
-            # sort best score by train / val
+            #sort best score by train / val
             child_score, loss_score  = self.val_fn(child, self.val, self.loss_fn)
             if self.debug:
                 print('VAL: ch_acc_score',child_score, 'ch_loss', loss_score, 'best_score:',best_child_score)
@@ -228,6 +232,8 @@ class Solver:
                 bc_loss_score = loss_score
                 best_child_score = child_score
                 best_child = deepcopy(child)
+                self.model = deepcopy(child)
+                self.acc_score = child_score
         
         print('BEST: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score)
         self.model = deepcopy(best_child)  

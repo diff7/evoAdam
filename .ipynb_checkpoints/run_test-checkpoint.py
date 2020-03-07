@@ -38,7 +38,7 @@ def train_models(params, net, device=0):
     path = ''
     for key in params:
         experiment_note += key +'_'+ params[key]+'\n'
-        path +=  '_'+ params[key]+'_ADAM_'+'_1_'
+        path +=  '_'+ params[key]+'SGD'+'_1_'
 
 
     logger = Logger(path, experiment_note)
@@ -48,8 +48,8 @@ def train_models(params, net, device=0):
 
     lr = 0.001
 
-    #optimizer = torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9, weight_decay=0.0001)
-    optimizer = torch.optim.Adam(net.parameters(), lr=lr)
+    optimizer = torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9, weight_decay=0.0001)
+    #optimizer = torch.optim.SGD(net.parameters(), lr=lr)
 
     criterion = nn.CrossEntropyLoss()
     evo_optim = CrossN()
@@ -107,7 +107,7 @@ def train_models(params, net, device=0):
 def train_three_types(model, TF, name):
     modes = [ 'evo_only', 'gradient']  #'evo_cross'
 
-    evo_step = 5
+    evo_step = 2
 
     for mode in modes:
 #         orig_stdout = sys.stdout

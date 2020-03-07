@@ -1,0 +1,45 @@
+Files already downloaded and verified
+Files already downloaded and verified
+training
+TRAINING MODE EVO_ONLY
+./experiments/2020-02-25/_resnet18_ADAM__1__F_ADAM__1__evo_only_ADAM__1__5_ADAM__1__15:29
+net_name_resnet18
+preptrained_F
+mode_evo_only
+evo_step_5
+
+Start training
+
+first test
+started score - 0.0
+Epoch: 1	 Iterations: 0
+[2] loss: 1.101 validation score: 59.86 %
+Epoch: 2	 Iterations: 196
+[3] loss: 0.643 validation score: 67.29 %
+Epoch: 3	 Iterations: 392
+[4] loss: 0.408 validation score: 69.80 %
+Epoch: 4	 Iterations: 588
+[5] loss: 0.307 validation score: 68.94 %
+Epoch: 5	 Iterations: 784
+BASE SCORE val: acc: 69.04, loss: 0.0037871268577873707
+VAL: ch_acc_score 69.04 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
+VAL: ch_acc_score 68.94 ch_loss tensor(0.0038, device='cuda:0') best_score: 69.04
