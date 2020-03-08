@@ -111,12 +111,7 @@ class Solver:
                 print(f'Epoch: {epoch}\t Iterations: {self.iteration}')
             if (epoch % self.evo_step == 0) and (self.mode != 'gradient'):
                 #self.model.eval()
-                if self.mode == 'evo_cross':
-                    best_child_score = self.batch_evolve_normal()
-                    self.logger.add_scalars({'Evolution accuracy':{'x':self.iteration,'y':best_child_score}})
-                    if self.debug:
-                        print(f"best child - {best_child_score}")
-                elif self.mode == 'evo_only':
+                if self.mode == 'evo_only':
                     best_child_score = self.batch_evolve_simple()
                     self.logger.add_scalars({'Evolution accuracy':{'x':self.iteration,'y':best_child_score}})
                     if self.debug:
@@ -163,80 +158,47 @@ class Solver:
         return (loss.item(), val_score)
     
 
-    # Mutate weights N times, choose 3 best candidates
-    # Mix 3 best models with each ohther using cross_N
-    def batch_evolve_normal(self):
-        Logger = self.logger
-        best_kids = MaxSizeList(self.best_child_count)
-        best_child = deepcopy(self.model)
-        #best_child = mutate_weights(best_child)
-        best_child.apply(self.mutate_weights)
-        best_child_score, bc_loss_score = self.val_fn(best_child, self.val, self.loss_fn)
-        best_kids.push(best_child)
-        for _ in range(self.child_count - 1):
-            child = deepcopy(self.model)
-            #child = mutate_weights(child, self.lr)
-            child.apply(self.mutate_weights)
-            child_score, loss_score = self.val_fn(child, self.val,  self.loss_fn)
-            if loss_score < bc_loss_score:
-                bc_loss_score = loss_score
-                best_child_score = child_score
-                best_child = deepcopy(child)
-                best_kids.push(best_child)
-        for child in self.evo_optim.breed(best_kids.get_list()):
-            best_child_score,  loss_score = self.val_fn(child, self.val, self.loss_fn)
-            print(best_child_score, loss_score)
-            if loss_score < bc_loss_score:
-                bc_loss_score = loss_score
-                best_child_score = child_score
-                best_child = deepcopy(child)
-        self.model = deepcopy(best_child)
-        self.optim.param_groups = []
-        param_groups = list(self.model.parameters())
-        if not isinstance(param_groups[0], dict):
-            param_groups = [{'params': param_groups}]
-        for param_group in param_groups:
-            self.optim.add_param_group(param_group)
-        del child
-        del best_child
-        return bc_loss_score
-    
-    # Mutate weights N times, choose 3 best candidates
     def batch_evolve_simple(self):
-
-      
+        
         best_child = deepcopy(self.model)   
         outputs = best_child(self.last_inputs)
-        loss = self.loss_fn(outputs, self.last_labels)
-        loss.backward()
-            
         best_child_score,  bc_loss_score = self.val_fn(best_child, self.val, self.loss_fn)
         self.acc_score = best_child_score
-        #best_child.apply(self.mutate_weights)
-        print(f'BASE SCORE val: acc: {best_child_score}, loss: {bc_loss_score}')
+        print(f'BASE SCORE VAL: acc: {best_child_score}, loss: {bc_loss_score}')
+        best_child_score,  bc_loss_score = self.val_fn(best_child, self.train, self.loss_fn)
+        print(f'BASE SCORE TRAIN: acc: {best_child_score}, loss: {bc_loss_score}')
+        
+        train_two = deepcopy(self.train)
         for _ in range(self.child_count - 1):
+            self.optim.zero_grad()
+            data = next(iter(train_two))
+            (inputs, labels) = data
+            inputs = inputs.cuda(self.device)
+            labels = labels.cuda(self.device)
+                 
             child = deepcopy(self.model)
             
             self.iteration+=1
             self.model.train()
             
-            outputs = child(self.last_inputs)
-            loss = self.loss_fn(outputs, self.last_labels)
+            outputs = child(inputs)
+            loss = self.loss_fn(outputs, labels)
             loss.backward()
             child.apply(self.mutate_weights)
             
             #sort best score by train / val
-            child_score, loss_score  = self.val_fn(child, self.val, self.loss_fn)           
+            child_score, loss_score  = self.val_fn(child, self.train, self.loss_fn)           
             if self.debug:
-                print('VAL: ch_acc_score',child_score, 'ch_loss', loss_score, 'best_score:',best_child_score)
+                print('TRAIN: ch_acc_score',child_score, 'ch_loss', loss_score, 'best_score:',best_child_score)
             if child_score > best_child_score:
                 bc_loss_score = loss_score
                 best_child_score = child_score
                 best_child = deepcopy(child)
                 self.model = deepcopy(child)
       
-        print('BEST: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score)
-        self.model = deepcopy(best_child)  
+        print('BEST TRAIN: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score)
+        best_child_score,  bc_loss_score = self.val_fn(best_child, self.val, self.loss_fn)
+        print('BEST VAL: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score)
         self.optim.param_groups = []
         param_groups = list(self.model.parameters())
         if not isinstance(param_groups[0], dict):

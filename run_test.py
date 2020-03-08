@@ -15,6 +15,10 @@ from crossngover import CrossN
 
 torch.manual_seed(0)
 
+
+
+
+
 transform = transforms.Compose(
     [transforms.ToTensor(),
      transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
@@ -28,6 +32,9 @@ testset = torchvision.datasets.CIFAR10(root='./data', train=False,
                                        download=True, transform=transform)
 testloader = torch.utils.data.DataLoader(testset, batch_size=256,
                                          shuffle=False, num_workers=2)
+
+
+
 
 def train_models(params, net, device=0):
 
@@ -107,7 +114,7 @@ def train_models(params, net, device=0):
 def train_three_types(model, TF, name):
     modes = [ 'evo_only', 'gradient']  #'evo_cross'
 
-    evo_step = 4
+    evo_step = 2
 
     for mode in modes:
 #         orig_stdout = sys.stdout
