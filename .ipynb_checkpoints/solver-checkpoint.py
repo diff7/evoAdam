@@ -87,13 +87,13 @@ class Solver:
                 grad = l.weight.grad
                 if not grad is None:
                     score = self.acc_score/100
-                    coef = 1000**(0.5-score)
+                    coef = (1/self.lr)**(-score)
                     #grad[grad <0] = 0
                     # CHANGE TO 0 - 1 to check later
                     uniform = torch.distributions.Uniform(-1,1)
                     noise = uniform.sample(sample_shape=l.weight.grad.size()).cuda()
                     #random_lr = self.lr*random.uniform(1, 5)
-                    l.weight.data = l.weight.data - self.lri*coef*noise*grad
+                    l.weight.data = l.weight.data - coef*noise*grad
 
     
     # The main call to start training
@@ -210,8 +210,9 @@ class Solver:
         loss = self.loss_fn(outputs, self.last_labels)
         loss.backward()
             
-        best_child.apply(self.mutate_weights)
         best_child_score,  bc_loss_score = self.val_fn(best_child, self.val, self.loss_fn)
+        self.acc_score = best_child_score
+        #best_child.apply(self.mutate_weights)
         print(f'BASE SCORE val: acc: {best_child_score}, loss: {bc_loss_score}')
         for _ in range(self.child_count - 1):
             child = deepcopy(self.model)
@@ -225,7 +226,7 @@ class Solver:
             child.apply(self.mutate_weights)
             
             #sort best score by train / val
-            child_score, loss_score  = self.val_fn(child, self.val, self.loss_fn)
+            child_score, loss_score  = self.val_fn(child, self.val, self.loss_fn)           
             if self.debug:
                 print('VAL: ch_acc_score',child_score, 'ch_loss', loss_score, 'best_score:',best_child_score)
             if child_score > best_child_score:
@@ -233,8 +234,7 @@ class Solver:
                 best_child_score = child_score
                 best_child = deepcopy(child)
                 self.model = deepcopy(child)
-                self.acc_score = child_score
-        
+      
         print('BEST: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score)
         self.model = deepcopy(best_child)  
         self.optim.param_groups = []

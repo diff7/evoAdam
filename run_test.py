@@ -107,7 +107,7 @@ def train_models(params, net, device=0):
 def train_three_types(model, TF, name):
     modes = [ 'evo_only', 'gradient']  #'evo_cross'
 
-    evo_step = 2
+    evo_step = 4
 
     for mode in modes:
 #         orig_stdout = sys.stdout
