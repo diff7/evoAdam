@@ -36,7 +36,7 @@ valloader = torch.utils.data.DataLoader(valset, batch_size=256,
                                          shuffle=False, num_workers=2)
 
 # TRAIN_SPLITTED
-train_one, train_two = torch.utils.data.random_split(trainset, [48000,2000])
+train_one, train_two = torch.utils.data.random_split(trainset, [45000,5000])
 
 train_one_loader = torch.utils.data.DataLoader(train_one, batch_size=256,
                                           shuffle=False, num_workers=2)
@@ -162,4 +162,4 @@ if __name__ == "__main__":
     net.classifier = nn.Linear(num_ftrs, len(classes))
     net.cuda()
     print('training')
-    train_three_types(net, 'F', 'resnet18')
+    train_three_types(net, 'T', 'resnet18')

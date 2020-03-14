@@ -24,7 +24,7 @@ class Solver:
         val,
         epochs=100,
         evo_step=5,
-        child_count=60,
+        child_count=30,
         best_child_count=3,
         mode = 'evo_cross',
         debug = True,
@@ -57,7 +57,7 @@ class Solver:
                 grad = l.weight.grad
                 if not grad is None:
                     score = self.acc_score/50 # 50 wast foung as hyperparametr
-                    temp = (self.lr)**(score)
+                    temp = self.lr*(1/score)**(1/2)
                     #grad[grad <0] = 0
                     # CHANGE TO 0 - 1 to check later
                     uniform = torch.distributions.Uniform(-1,1)
@@ -92,6 +92,8 @@ class Solver:
                 if self.debug:
                     print('[%d] loss: %.3f validation score: %.2f %%' \
                     % (epoch + 1, loss, val_score))
+                    print('[%d] loss: %.3f train score: %.2f %%' \
+                    % (epoch + 1, loss, train_score))
             self.model.eval()
             final_score = self.batch_test()
             self.logger.add_scalars({'Final score':{'x':self.iteration,'y':final_score}})
@@ -129,11 +131,11 @@ class Solver:
 
     def batch_evolve_simple(self):
         
-        best_child = deepcopy(self.model)   
-        best_child_score,  bc_loss_score = self.val_fn(best_child, self.val, self.loss_fn)
+        #best_child = deepcopy(self.model)   
+        best_child_score,  bc_loss_score = self.val_fn(self.model, self.val, self.loss_fn)
         self.acc_score = best_child_score
         print(f'BASE SCORE VAL: acc: {best_child_score}, loss: {bc_loss_score}')
-        best_child_score,  bc_loss_score = self.val_fn(best_child, self.train_two, self.loss_fn)
+        best_child_score,  bc_loss_score = self.val_fn(self.model, self.train_two, self.loss_fn)
         print(f'BASE SCORE TRAIN_TWO: acc: {best_child_score}, loss: {bc_loss_score}')
         child_score = best_child_score
         for _ in range(self.child_count - 1):
@@ -152,7 +154,7 @@ class Solver:
             loss = self.loss_fn(outputs, labels)
             loss.backward()
             child.apply(self.mutate_weights)
-            
+
             #sort best score by train / val
             child_score, loss_score  = self.val_fn(child, self.train_two, self.loss_fn)           
             if self.debug:
@@ -160,24 +162,24 @@ class Solver:
             if child_score > best_child_score:
                 bc_loss_score = loss_score
                 best_child_score = child_score
-                best_child = deepcopy(child)
+                #best_child = deepcopy(child)
                 self.model = deepcopy(child)
       
         print('BEST TRAIN_TWO: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score)
         self.logger.add_scalars({'Train_two':{'x':self.iteration,'y':best_child_score}})
         
-        best_child_score,  bc_loss_score = self.val_fn(best_child, self.val, self.loss_fn)
+        best_child_score,  bc_loss_score = self.val_fn(self.model, self.val, self.loss_fn)
         print('BEST VAL: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score)
         self.logger.add_scalars({'Validation':{'x':self.iteration,'y':best_child_score}})
         
-#         self.optim.param_groups = []
-#         param_groups = list(self.model.parameters())
-#         if not isinstance(param_groups[0], dict):
-#             param_groups = [{'params': param_groups}]
-#         for param_group in param_groups:
-#             self.optim.add_param_group(param_group)
-        del child
-        del best_child
+        self.optim.param_groups = []
+        param_groups = list(self.model.parameters())
+        if not isinstance(param_groups[0], dict):
+            param_groups = [{'params': param_groups}]
+        for param_group in param_groups:
+            self.optim.add_param_group(param_group)
+        #del child
+        #del best_child
         return bc_loss_score
     
     def batch_test(self):
