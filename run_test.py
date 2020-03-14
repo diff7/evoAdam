@@ -17,21 +17,32 @@ torch.manual_seed(0)
 
 
 
-
-
 transform = transforms.Compose(
     [transforms.ToTensor(),
      transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
 
+# TRAIN_FULL
 trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
                                         download=True, transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=256,
+
+trainloader_full = torch.utils.data.DataLoader(trainset, batch_size=256,
                                           shuffle=False, num_workers=2)
 
-testset = torchvision.datasets.CIFAR10(root='./data', train=False,
+# TEST_FULL
+valset = torchvision.datasets.CIFAR10(root='./data', train=False,
                                        download=True, transform=transform)
-testloader = torch.utils.data.DataLoader(testset, batch_size=256,
+
+valloader = torch.utils.data.DataLoader(valset, batch_size=256,
                                          shuffle=False, num_workers=2)
+
+# TRAIN_SPLITTED
+train_one, train_two = torch.utils.data.random_split(trainset, [48000,2000])
+
+train_one_loader = torch.utils.data.DataLoader(train_one, batch_size=256,
+                                          shuffle=False, num_workers=2)
+
+train_two_loader = torch.utils.data.DataLoader(train_two, batch_size=256,
+                                          shuffle=False, num_workers=2)
 
 
 
@@ -45,7 +56,7 @@ def train_models(params, net, device=0):
     path = ''
     for key in params:
         experiment_note += key +'_'+ params[key]+'\n'
-        path +=  '_'+ params[key]+'SGD'+'_1_'
+        path +=  '_'+params[key]+'_SGD'
 
 
     logger = Logger(path, experiment_note)
@@ -55,8 +66,8 @@ def train_models(params, net, device=0):
 
     lr = 0.001
 
-    optimizer = torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9, weight_decay=0.0001)
-    #optimizer = torch.optim.SGD(net.parameters(), lr=lr)
+    #optimizer = torch.optim.Adam(net.parameters(), lr=lr)
+    optimizer = torch.optim.SGD(net.parameters(), lr=lr)
 
     criterion = nn.CrossEntropyLoss()
     evo_optim = CrossN()
@@ -83,7 +94,14 @@ def train_models(params, net, device=0):
         else:
             return 100.0 * correct / total, total_loss / total
 
-
+    
+    if mode == 'evo_only':
+        trainloader = train_one_loader
+        print('USING TRAIN ONE & TRAIN TWO')
+    if mode == 'gradient':
+        trainloader = trainloader_full
+        print('USING FULL TRAIN SET')
+    
     solver = Solver(
         net,
         optimizer,
@@ -92,11 +110,11 @@ def train_models(params, net, device=0):
         validation,
         evo_optim,
         trainloader,
-        testloader,
-        testloader,
+        train_two_loader,
+        valloader,
         epochs=50,
         evo_step=evo_step,
-        child_count=30,
+        child_count=40,
         best_child_count=3,
         mode=mode,
         debug=True,
@@ -114,7 +132,7 @@ def train_models(params, net, device=0):
 def train_three_types(model, TF, name):
     modes = [ 'evo_only', 'gradient']  #'evo_cross'
 
-    evo_step = 2
+    evo_step = 5
 
     for mode in modes:
 #         orig_stdout = sys.stdout
