@@ -164,11 +164,11 @@ class Solver:
                 best_child_score = child_score
                 best_child = deepcopy(child)
       
-        print('BEST TRAIN: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score)
+        print('BEST TRAIN: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score.item())
         self.logger.add_scalars({'Train':{'x':self.iteration,'y':best_child_score}})
         
         best_child_score,  bc_loss_score = self.val_fn(self.model, self.val, self.loss_fn)
-        print('BEST VAL: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score)
+        print('BEST VAL: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score.item())
         self.logger.add_scalars({'Validation':{'x':self.iteration,'y':best_child_score}})
         
         self.optim.param_groups = []
