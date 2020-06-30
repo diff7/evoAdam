@@ -19,8 +19,7 @@ class Solver:
         loss_fn,
         val_fn,
         evo_optim,
-        train_one,
-        train_two,
+        train,
         val,
         epochs=100,
         evo_step=5,
@@ -37,8 +36,7 @@ class Solver:
         self.val_fn = val_fn
         self.logger = logger
         self.evo_optim = evo_optim
-        self.train_one = train_one
-        self.train_two = train_two
+        self.train = train
         self.val = val
         self.epochs = epochs
         self.evo_step = evo_step
@@ -56,7 +54,7 @@ class Solver:
             if l.weight.requires_grad:
                 grad = l.weight.grad
                 if not grad is None:
-                    score = self.acc_score/50 # 50 wast foung as hyperparametr
+                    score = self.acc_score/50 # 50 wast found as hyperparametr
                     temp = self.lr*(1/score)**(1/2)
                     #grad[grad <0] = 0
                     # CHANGE TO 0 - 1 to check later
@@ -88,7 +86,7 @@ class Solver:
                 self.model.train()
                 (loss, val_score, train_score) = self.batch_train()
                 self.logger.add_scalars({'Validation':{'x':self.iteration,'y':val_score}})
-                self.logger.add_scalars({'Train_one':{'x':self.iteration,'y':train_score}})
+                self.logger.add_scalars({'Train':{'x':self.iteration,'y':train_score}})
                 if self.debug:
                     print('[%d] loss: %.3f validation score: %.2f %%' \
                     % (epoch + 1, loss, val_score))
@@ -107,7 +105,7 @@ class Solver:
     # Standard training
     def batch_train(self):
         loss = 0.0
-        for (i, data) in tqdm(enumerate(self.train_one, 0)):
+        for (i, data) in tqdm(enumerate(self.train, 0)):
             (inputs, labels) = data
             inputs = inputs.cuda(self.device)
             labels = labels.cuda(self.device)
@@ -121,7 +119,7 @@ class Solver:
             self.iteration+=1
             self.logger.add_scalars({'Training loss (only backprop)':{'x':self.iteration,'y':loss.item()}})
         val_score = self.val_fn(self.model, self.val)
-        train_score = self.val_fn(self.model, self.train_one)
+        train_score = self.val_fn(self.model, self.train)
         
         # LAST BATCH LOSS 
         self.last_inputs = inputs
@@ -135,38 +133,39 @@ class Solver:
         best_child_score,  bc_loss_score = self.val_fn(self.model, self.val, self.loss_fn)
         self.acc_score = best_child_score
         print(f'BASE SCORE VAL: acc: {best_child_score}, loss: {bc_loss_score}')
-        best_child_score,  bc_loss_score = self.val_fn(self.model, self.train_two, self.loss_fn)
-        print(f'BASE SCORE TRAIN_TWO: acc: {best_child_score}, loss: {bc_loss_score}')
+        best_child_score,  bc_loss_score = self.val_fn(self.model, self.train, self.loss_fn)
+        print(f'BASE SCORE TRAIN: acc: {best_child_score}, loss: {bc_loss_score.item()}')
         child_score = best_child_score
         for _ in range(self.child_count - 1):
             self.optim.zero_grad()
-            data = next(iter(self.train_two))
+            data = next(iter(self.train))
             (inputs, labels) = data
             inputs = inputs.cuda(self.device)
-            labels = labels.cuda(self.device)
-                 
-            child = deepcopy(self.model)
-            
+            labels = labels.cuda(self.device)     
+            child = deepcopy(self.model)    
             self.iteration+=1
             self.model.train()
             
+            # we did not cache gradients but it is possible 
+            # instead we compute them each time
+                             
             outputs = child(inputs)
             loss = self.loss_fn(outputs, labels)
             loss.backward()
             child.apply(self.mutate_weights)
 
             #sort best score by train / val
-            child_score, loss_score  = self.val_fn(child, self.train_two, self.loss_fn)           
+            child_score, loss_score  = self.val_fn(child, self.train, self.loss_fn)           
             if self.debug:
-                print('TRAIN_TWO: ch_acc_score',child_score, 'ch_loss', loss_score, 'best_score:',best_child_score)
-            if child_score > best_child_score:
+                print('TRAIN: ch_acc_score:',child_score, 'ch_loss:', loss_score.item(), 'best_score:',best_child_score)
+                             
+            if loss_score < bc_loss_score:
                 bc_loss_score = loss_score
                 best_child_score = child_score
-                #best_child = deepcopy(child)
-                self.model = deepcopy(child)
+                best_child = deepcopy(child)
       
-        print('BEST TRAIN_TWO: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score)
-        self.logger.add_scalars({'Train_two':{'x':self.iteration,'y':best_child_score}})
+        print('BEST TRAIN: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score)
+        self.logger.add_scalars({'Train':{'x':self.iteration,'y':best_child_score}})
         
         best_child_score,  bc_loss_score = self.val_fn(self.model, self.val, self.loss_fn)
         print('BEST VAL: ch_accuracy_score', best_child_score, 'ch_loss', bc_loss_score)

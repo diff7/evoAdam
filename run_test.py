@@ -1,19 +1,29 @@
+import os
 import sys
 import copy
+import random
+import numpy as np
 from datetime import datetime
 
 import torch
 import torchvision
 import torch.nn as nn
 import torchvision.transforms as transforms
-from torch.optim.optimizer import Optimizer, required
-
+from torch.optim.optimizer import Optimizer
 from logger import Logger
 
 from solver import Solver
-from crossngover import CrossN
+#from crossngover import CrossN
 
-torch.manual_seed(0)
+def set_seed(seed):
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    np.random.seed(seed)
+    random.seed(seed)
+    os.environ["PYTHONHASHSEED"] = str(seed)
 
 
 
@@ -25,7 +35,7 @@ transform = transforms.Compose(
 trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
                                         download=True, transform=transform)
 
-trainloader_full = torch.utils.data.DataLoader(trainset, batch_size=256,
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=256,
                                           shuffle=False, num_workers=2)
 
 # TEST_FULL
@@ -36,13 +46,13 @@ valloader = torch.utils.data.DataLoader(valset, batch_size=256,
                                          shuffle=False, num_workers=2)
 
 # TRAIN_SPLITTED
-train_one, train_two = torch.utils.data.random_split(trainset, [45000,5000])
+# train_one, train_two = torch.utils.data.random_split(trainset, [45000,5000])
 
-train_one_loader = torch.utils.data.DataLoader(train_one, batch_size=256,
-                                          shuffle=False, num_workers=2)
+# train_one_loader = torch.utils.data.DataLoader(train_one, batch_size=256,
+#                                           shuffle=False, num_workers=2)
 
-train_two_loader = torch.utils.data.DataLoader(train_two, batch_size=256,
-                                          shuffle=False, num_workers=2)
+# train_two_loader = torch.utils.data.DataLoader(train_two, batch_size=256,
+#                                           shuffle=False, num_workers=2)
 
 
 
@@ -50,27 +60,21 @@ train_two_loader = torch.utils.data.DataLoader(train_two, batch_size=256,
 def train_models(params, net, device=0):
 
     mode = params['mode']
-    evo_step = int(params['evo_step'])
-
     experiment_note = ''
     path = ''
     for key in params:
-        experiment_note += key +'_'+ params[key]+'\n'
-        path +=  '_'+params[key]+'_SGD'
-
-
+        experiment_note += key +'_'+ str(params[key])+'\n'
+        path +=  f'_{key}_'+str(params[key])+'_'
     logger = Logger(path, experiment_note)
 
     print(logger.path)
     print(experiment_note)
 
-    lr = 0.001
-
     #optimizer = torch.optim.Adam(net.parameters(), lr=lr)
-    optimizer = torch.optim.SGD(net.parameters(), lr=lr)
-
+    optimizer = torch.optim.SGD(net.parameters(), lr=params['lr'])
     criterion = nn.CrossEntropyLoss()
-    evo_optim = CrossN()
+    #evo_optim = CrossN()
+    evo_optim = None # from old crossingover experiments
 
     def validation(net, dataloader, loss_fn=None, device=0):
         correct = 0
@@ -93,14 +97,6 @@ def train_models(params, net, device=0):
             return 100.0 * correct / total
         else:
             return 100.0 * correct / total, total_loss / total
-
-    
-    if mode == 'evo_only':
-        trainloader = train_one_loader
-        print('USING TRAIN ONE & TRAIN TWO')
-    if mode == 'gradient':
-        trainloader = trainloader_full
-        print('USING FULL TRAIN SET')
     
     solver = Solver(
         net,
@@ -110,15 +106,14 @@ def train_models(params, net, device=0):
         validation,
         evo_optim,
         trainloader,
-        train_two_loader,
         valloader,
         epochs=50,
-        evo_step=evo_step,
-        child_count=40,
-        best_child_count=3,
+        evo_step=int(params['evo_step']),
+        child_count=params['child_count'],
+        best_child_count=3, # for crossingover, not used 
         mode=mode,
         debug=True,
-        lr=lr,
+        lr=params['lr'],
         device=device)
 
     logger.add_post_result(f'start: {datetime.now()}')
@@ -128,38 +123,47 @@ def train_models(params, net, device=0):
     logger.close()
 
 
+def init_model(pretrained=False):
+    model = torchvision.models.resnet18(pretrained=False)
+    num_ftrs = model.fc.in_features
+    model.classifier = nn.Linear(num_ftrs, 10)
+    model.cuda()
+    return model
+    
 
-def train_three_types(model, TF, name):
+def train_main(model, params=None, to_stdout=False):
+    
+    if params is None:
+        params = {'net_name':'Res18',
+                 'preptrained':TF,
+                 'child_count':40,
+                 'evo_step':'5',
+                 'random_seed':10}
+        
+    set_seed(params['random_seed'])
+        
     modes = [ 'evo_only', 'gradient']  #'evo_cross'
-
-    evo_step = 5
-
     for mode in modes:
-#         orig_stdout = sys.stdout
-#         f = open(f'outputs/{name}_{mode}.txt', 'w')
-#         sys.stdout = f
+        params['mode'] = mode
+        if to_stdout:
+            orig_stdout = sys.stdout
+            f = open(f'outputs/{name}_{mode}.txt', 'w')
+            sys.stdout = f
     
         print(f'TRAINING MODE {mode.upper()}')
-        params = {'net_name':name,
-             'preptrained':TF,
-             'mode':mode,
-             'evo_step':str(evo_step)}
+        
+        # we copy the model to make sure both models
+        # with sgd & noise were initialized equally 
         temp_model = copy.deepcopy(model)
         train_models(params, temp_model)
-#         f.close()
-#         sys.stdout = orig_stdout
+        
+        if to_stdout:
+            f.close()
+            sys.stdout = orig_stdout
         torch.cuda.empty_cache()
     print('Finished')
 
 if __name__ == "__main__":
-    net = torchvision.models.resnet18(pretrained=False)
-
-    num_ftrs = net.fc.in_features
-
-    classes = ('plane', 'car', 'bird', 'cat',
-            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
-
-    net.classifier = nn.Linear(num_ftrs, len(classes))
-    net.cuda()
+    model = init_model(False)
     print('training')
-    train_three_types(net, 'T', 'resnet18')
+    train_main(model, 'F', 'resnet18')
